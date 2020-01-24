@@ -16,14 +16,12 @@ var pem2jwk = require("pem-jwk").pem2jwk;
 
 const scheme = process.env.SCHEME !== undefined ? process.env.SCHEME : "http";
 const host =
-  process.env.HOST !== undefined ? process.env.HOST : "129.194.217.90";
+  process.env.HOST !== undefined ? process.env.HOST : "129.194.217.112";
 const port = process.env.PORT !== undefined ? process.env.PORT : "80";
 
 var privKey = fs.readFileSync("keys/privkey.pem", "ascii");
 var jwk = pem2jwk(privKey);
 var jwkID = 0;
-
-var authorizationCode = "";
 
 server();
 
@@ -89,6 +87,7 @@ function server() {
               query
             );
             let state = httptools.getParameterByName("state", query);
+            const authorizationCode = httptools.getParameterByName("login_hint", query);
             redirect_uri_ohif = `${redirect_uri_ohif}?code=${authorizationCode}&state=${state}`;
             const headersAuth = {
               Location: redirect_uri_ohif
@@ -111,7 +110,7 @@ function server() {
             "https://demo.kheops.online/api/token";
           currentConfiguration.token_endpoint =
             "https://demo.kheops.online/api/token";
-          const clientID = "Kj84YyGrP56ntpGOY5aKV5";
+          const clientID = "igl7l1gnz5Wth9Lg7GgpAj";
           if (request.method == "POST") {
             var body = "";
 
@@ -161,9 +160,11 @@ function server() {
           break;
 
         case "/report.html":
-          authorizationCode = httptools.getParameterByName("code", query);
+          const authorizationCode = httptools.getParameterByName("code", query);
+          const studyUID = httptools.getParameterByName("studyUID", query);
           const headers = {
-            Location: "http://127.0.0.1:3000"
+            // Location: 'http://127.0.0.1:3000'
+            Location: `http://127.0.0.1:3000/login?iss=127.0.0.1&login_hint=${authorizationCode}&target_link_uri=${encodeURIComponent(`http://127.0.0.1:3000/viewer/${studyUID}`)}`
           };
           response.writeHead(303, headers);
           response.end();
