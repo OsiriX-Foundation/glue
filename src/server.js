@@ -8,18 +8,20 @@ import * as responseDefine from './tools/response'
 import * as httptools from './tools/httptools'
 import { messageNotFound, messageInternalError, messageMissingQuery } from './tools/responsemessages'
 import * as responsemessages from './tools/responsemessages'
+require('dotenv').config();
 var qs = require('querystring')
 var pem2jwk = require('pem-jwk').pem2jwk
 
 const scheme = process.env.SCHEME !== undefined ? process.env.SCHEME : 'http'
 const host = process.env.HOST !== undefined ? process.env.HOST : '129.194.217.3'
 const port = process.env.PORT !== undefined ? process.env.PORT : '80'
-const hostname = `${host}${port !== '80' || port !== '443' ? port : ''}`
+const hostname = `${host}${port !== '80' || port !== '443' ? `:${port}` : ''}`
 const routerBaseName = process.env.BASE_NAME !== undefined ? process.env.BASE_NAME : '/test';
+const privkeypath = process.env.PRIVKEY_PATH !== undefined ? process.env.PRIVKEY_PATH : 'keys'
 
-var privKey = fs.readFileSync('keys/privkey.pem', 'ascii')
-var jwk = pem2jwk(privKey)
-var jwkID = 0
+const privKey = fs.readFileSync(`${privkeypath}/privkey.pem`, 'ascii')
+const jwk = pem2jwk(privKey)
+const jwkID = 0
 
 server()
 

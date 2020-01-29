@@ -5,9 +5,9 @@ WORKDIR /usr/src/app
 
 COPY src ./src
 COPY package*.json ./
-RUN npm install
-RUN ls
-RUN mkdir keys
+COPY .babelrc ./
+RUN npm install --save
+RUN npm run build
 
-EXPOSE 8080
-CMD [ "npm", "start" ]
+EXPOSE 80
+CMD [ "npm", "run", "serve" ]

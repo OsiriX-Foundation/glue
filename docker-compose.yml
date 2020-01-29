@@ -9,5 +9,11 @@ services:
     container_name: nodejs
     env_file: docker-compose.env
     ports:
-      - "8080:8080"
+      - "80:80"
+    secrets:
+      - privkey.pem
     restart: unless-stopped
+
+secrets:
+  privkey.pem:
+    file: secrets/privkey.pem

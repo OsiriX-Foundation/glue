@@ -1,7 +1,7 @@
 export function JSON_wellknown(scheme, hostname, routerBaseName = '') {
   try {
     const respJSON = JSON.stringify({
-      "report-configuration": `${scheme}://${hostname}${routerBaseName}/.well-known/kheops-report-configuration`,
+      "report-configuration": `${scheme}://${hostname}${routerBaseName}/.well-known/kheops-configuration`,
       jwks_uri: `${scheme}://${hostname}${routerBaseName}/certs`
     });
     return respJSON;
