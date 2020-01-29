@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   nodejs:
@@ -7,4 +7,7 @@ services:
       dockerfile: Dockerfile
     image: nodejs
     container_name: nodejs
+    env_file: docker-compose.env
+    ports:
+      - "8080:8080"
     restart: unless-stopped

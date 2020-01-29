@@ -1,9 +1,8 @@
-export function JSON_wellknown(scheme, host, port = "80") {
-  port = port === "80" || port === "443" ? "" : ":" + port;
+export function JSON_wellknown(scheme, hostname, routerBaseName = '') {
   try {
     const respJSON = JSON.stringify({
-      "report-configuration": `${scheme}://${host}${port}/.well-known/kheops-report-configuration`,
-      jwks_uri: `${scheme}://${host}${port}/certs`
+      "report-configuration": `${scheme}://${hostname}${routerBaseName}/.well-known/kheops-report-configuration`,
+      jwks_uri: `${scheme}://${hostname}${routerBaseName}/certs`
     });
     return respJSON;
   } catch (e) {
@@ -11,15 +10,14 @@ export function JSON_wellknown(scheme, host, port = "80") {
   }
 }
 
-export function JSON_kheopsConfiguration(scheme = "http", host, port = "80") {
-  port = port === "80" || port === "443" ? "" : ":" + port;
+export function JSON_kheopsConfiguration(scheme = "http", hostname, routerBaseName = '') {
   try {
     const respJSON = JSON.stringify({
-      jwks_uri: `${scheme}://${host}${port}/certs`,
+      jwks_uri: `${scheme}://${hostname}${routerBaseName}/certs`,
       response_type: "code",
       token_endpoint_auth_method: "private_key_jwt",
       token_endpoint_auth_signing_alg: "RS256",
-      redirect_uri: `${scheme}://${host}${port}/report.html`,
+      redirect_uri: `${scheme}://${hostname}${routerBaseName}/report.html`,
       client_name: "Kheops Report Provider",
       client_uri: "https://kheops.online",
       contacts: ["contact@kheops.online"]
@@ -30,13 +28,12 @@ export function JSON_kheopsConfiguration(scheme = "http", host, port = "80") {
   }
 }
 
-export function JSON_openidConfiguration(scheme = "http", host, port = "80") {
-  port = port === "80" || port === "443" ? "" : ":" + port;
+export function JSON_openidConfiguration(scheme = "http", hostname, routerBaseName = '') {
   try {
     const respJSON = JSON.stringify({
-      issuer: `${scheme}://${host}${port}`,
-      authorization_endpoint: `${scheme}://${host}${port}/authorization`,
-      token_endpoint: `${scheme}://${host}${port}/token`
+      issuer: `${scheme}://${hostname}`,
+      authorization_endpoint: `${scheme}://${hostname}${routerBaseName}/authorization`,
+      token_endpoint: `${scheme}://${hostname}${routerBaseName}/token`
     });
     return respJSON;
   } catch (e) {
